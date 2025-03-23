@@ -1,0 +1,129 @@
+<p-table [value]="mfeConfigs()" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Remote Entry</th>
+      <th>Remote Name</th>
+      <th>Exposed Module</th>
+      <th>Scopes</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-config>
+    <tr>
+      <td>{{ config.id }}</td>
+      <td>{{ config.remoteEntry }}</td>
+      <td>{{ config.remoteName }}</td>
+      <td>{{ config.exposedModule }}</td>
+      <td>{{ getScopeNames(config) }}</td>
+      <td>
+        <p-button
+          label="Edit"
+          styleClass="p-button-secondary mr-2"
+          (click)="showEditDialog(config)"
+        ></p-button>
+        <p-button
+          label="Delete"
+          severity="danger"
+          (click)="deleteConfig(config.id)"
+        ></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-button label="Add MFE Config" (click)="showAddDialog()" class="mt-3"></p-button>
+
+<!-- Add MFE Config Dialog -->
+<p-dialog
+  header="Add MFE Config"
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '25rem' }"
+  styleClass="overflow-visible"
+  [modal]="true"
+>
+  <div class="flex flex-column gap-3 p-3">
+    <input
+      pInputText
+      placeholder="Remote Entry"
+      [(ngModel)]="newConfig().remoteEntry"
+      name="remoteEntry"
+      class="w-full"
+    />
+    <input
+      pInputText
+      placeholder="Remote Name"
+      [(ngModel)]="newConfig().remoteName"
+      name="remoteName"
+      class="w-full"
+    />
+    <input
+      pInputText
+      placeholder="Exposed Module"
+      [(ngModel)]="newConfig().exposedModule"
+      name="exposedModule"
+      class="w-full"
+    />
+    <p-multiSelect
+      [options]="scopes()"
+      optionLabel="name"
+      optionValue="name"
+      placeholder="Select Scopes"
+      [(ngModel)]="newConfig().scopes"
+      name="scopes"
+      class="w-full"
+      appendTo="body"
+    ></p-multiSelect>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Save" (click)="createConfig()"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit MFE Config Dialog -->
+<p-dialog
+  header="Edit MFE Config"
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '25rem' }"
+  styleClass="overflow-visible"
+  [modal]="true"
+>
+  <div *ngIf="editedConfig()" class="flex flex-column gap-3 p-3">
+    <input
+      pInputText
+      placeholder="Remote Entry"
+      [(ngModel)]="editedConfig()!.remoteEntry"
+      name="remoteEntry"
+      class="w-full"
+    />
+    <input
+      pInputText
+      placeholder="Remote Name"
+      [(ngModel)]="editedConfig()!.remoteName"
+      name="remoteName"
+      class="w-full"
+    />
+    <input
+      pInputText
+      placeholder="Exposed Module"
+      [(ngModel)]="editedConfig()!.exposedModule"
+      name="exposedModule"
+      class="w-full"
+    />
+    <p-multiSelect
+      [options]="scopes()"
+      optionLabel="name"
+      optionValue="name"
+      placeholder="Select Scopes"
+      [(ngModel)]="editedConfig()!.scopes"
+      name="scopes"
+      class="w-full"
+      appendTo="body"
+    ></p-multiSelect>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Save" (click)="updateConfig()"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

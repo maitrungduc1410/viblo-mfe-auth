@@ -1,0 +1,21 @@
+
+.react-app-view {
+  line-height: 1.1;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.react-app-view h1 {
+  font-size: 3.6rem;
+  font-weight: 700;
+}
+
+.react-app-view p {
+  font-size: 1.2rem;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+.react-app-view a {
+  margin-left: 8px;
+}

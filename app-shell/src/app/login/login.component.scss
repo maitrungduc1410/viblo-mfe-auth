@@ -1,0 +1,18 @@
+/* styles.css or component-specific styles */
+.login-card {
+  top: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.login-button {
+  margin-top: 16px;
+}

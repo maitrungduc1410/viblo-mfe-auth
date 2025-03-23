@@ -1,0 +1,52 @@
+<div class="flex h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div
+    [@sidebarAnimation]="sidebarVisible() ? 'open' : 'closed'"
+    class="bg-white shadow-2 flex-none flex flex-column"
+  >
+    <div class="flex justify-content-between align-items-center p-3 border-bottom-1 border-gray-200">
+      <h3 class="m-0">Dashboard</h3>
+      <p-button
+        icon="pi pi-times"
+        styleClass="p-button-text"
+        (click)="toggleSidebar()"
+      ></p-button>
+    </div>
+    <ul class="list-none p-0 flex-1">
+      <li class="p-3">
+        <a routerLink="/dashboard/users" routerLinkActive="font-bold text-blue-500" class="text-decoration-none text-color">Users</a>
+      </li>
+      <li class="p-3">
+        <a routerLink="/dashboard/scopes" routerLinkActive="font-bold text-blue-500" class="text-decoration-none text-color">Scopes</a>
+      </li>
+      <li class="p-3">
+        <a routerLink="/dashboard/mfe-config" routerLinkActive="font-bold text-blue-500" class="text-decoration-none text-color">MFE Config</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-column">
+    <!-- Header -->
+    <div class="flex justify-content-between align-items-center p-3 bg-gray-100 border-bottom-1 border-gray-200">
+      <p-button
+        icon="pi pi-bars"
+        styleClass="p-button-text"
+        (click)="toggleSidebar()"
+      ></p-button>
+      <div class="flex align-items-center" *ngIf="user()">
+        <p-avatar
+          [label]="user()?.email?.charAt(0)?.toUpperCase()"
+          shape="circle"
+          (click)="menu.toggle($event)"
+        ></p-avatar>
+        <p-menu #menu [model]="menuItems()" [popup]="true"></p-menu>
+      </div>
+    </div>
+
+    <!-- Sub-page Content -->
+    <div class="p-4 flex-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

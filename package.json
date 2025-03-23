@@ -1,0 +1,17 @@
+{
+  "name": "viblo-mfe-shared-deps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "concurrently \"npm install --prefix angular-app\" \"npm install --prefix app-shell\" \"npm install --prefix react-app\" \"npm install --prefix vue-app\" \"npm install --prefix auth-service\" \"npm install --prefix manager-ui\"",
+    "start": "concurrently \"npm start --prefix angular-app\" \"npm start --prefix app-shell\" \"npm start --prefix react-app\" \"npm start --prefix vue-app\" \"npm start --prefix auth-service\" \"npm start --prefix manager-ui\"",
+    "postinstall": "npm run install:all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

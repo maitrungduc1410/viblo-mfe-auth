@@ -1,0 +1,39 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String // Hashed password
+  isAdmin    Boolean  @default(false)
+  scopes     Scope[]  @relation("UserScopes") // Many-to-many relation with scopes
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Scope {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // e.g., "read:users", "write:scopes"
+  description String?
+  users       User[]   @relation("UserScopes") // Many-to-many relation with users
+  mfeConfigs  MFEConfig[] @relation("MFEConfigScopes") // Many-to-many with MFEConfig
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MFEConfig {
+  id            Int      @id @default(autoincrement())
+  remoteEntry  String   @unique
+  remoteName   String
+  exposedModule String
+  scopes        Scope[]  @relation("MFEConfigScopes") // Many-to-many with Scope
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

@@ -1,0 +1,58 @@
+.widget {
+  &:hover &__remove {
+    transform: scale(1);
+  }
+
+  &__remove {
+    transform: scale(0);
+  }
+
+  &__header {
+    border-bottom: 1px solid var(--p-surface-200);
+  }
+}
+
+.widget-link {
+  border-left: 4px solid transparent;
+}
+
+.grid {
+  &__item {
+    resize: both;
+    min-width: 200px;
+    min-height: 200px;
+    border: 1px solid var(--p-surface-300);
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03),
+      0px 0px 2px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.12);
+
+    &-drag-handle {
+      cursor: move;
+    }
+
+    &:active {
+      z-index: 2;
+    }
+
+    &.muuri-item-dragging {
+      z-index: 3;
+    }
+
+    &.muuri-item-releasing {
+      z-index: 2;
+    }
+
+    &.muuri-item-hidden {
+      z-index: 0;
+    }
+  }
+
+  ::ng-deep {
+    // because place holder is created manually by Muuri, not Angular, so it doesn't have scope. Eg: it doesn't have .[_ngcontent-old-c35], therefor we need to use ng-deep to target it
+    .muuri-item-placeholder {
+      border: dashed 1px var(--primary-color);
+      border-radius: 0.5rem;
+    }
+  }
+}

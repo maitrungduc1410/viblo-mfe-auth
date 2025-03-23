@@ -1,0 +1,87 @@
+<div class="grid js-grid relative" #grid>
+  @for(widget of appService.openingMFEs(); track widget._id) {
+  <div
+    class="grid__item block absolute overflow-auto m-2 max-w-full hover:border-primary transition-duration-300 transition-colors"
+    [style.width.px]="widget.width"
+    [style.height.px]="widget.height"
+    [style.resize]="'both'"
+    [id]="widget._id"
+    #item
+  >
+    <div class="widget w-full h-full flex flex-column overflow-hidden">
+      <div class="widget__header flex align-items-center px-2 py-1">
+        <div class="relative" *ngIf="widget.type !== 'standalone'">
+          <p-button
+            [rounded]="true"
+            severity="secondary"
+            variant="text"
+            class="mr-2"
+            (click)="showLinks(widget, $event)"
+          >
+            <i
+              [class]="getWidgetIcon(widget.type)"
+              [style.color]="widget.color"
+            ></i>
+          </p-button>
+          <p-badge
+            *ngIf="widget.connectedTo"
+            class="absolute top-0"
+            [size]="'xlarge'"
+            [style.backgroundColor]="widget.connectedTo.color"
+            [style.right]="'10px'"
+            [style.width]="'14px'"
+            [style.height]="'14px'"
+          />
+        </div>
+
+        <span class="flex-1 font-bold js-drag-handle cursor-move">
+          {{ widget.title }}
+        </span>
+        <button
+          pButton
+          icon="pi pi-times"
+          class="widget__remove cursor-pointer transition-duration-150 transition-ease-out transition-all p-button-rounded p-button-text p-button-plain"
+          (click)="removeWidget(widget)"
+        ></button>
+      </div>
+
+      <div class="m-2 block flex-1 overflow-auto" [ngSwitch]="widget.framework">
+        <app-react-wrapper
+          *ngSwitchCase="'react'"
+          [component]="widget.component"
+          [inputData]="widget.inputData()"
+          (outputData)="handleOutputData(widget, $event)"
+        ></app-react-wrapper>
+        <app-vue-wrapper
+          *ngSwitchCase="'vue'"
+          [component]="widget.component"
+          [plugins]="widget.plugins"
+          [inputData]="widget.inputData()"
+          (outputData)="handleOutputData(widget, $event)"
+        ></app-vue-wrapper>
+        <app-angular-wrapper
+          *ngSwitchDefault
+          [component]="widget.component"
+          [inputData]="widget.inputData()"
+          (outputData)="handleOutputData(widget, $event)"
+        ></app-angular-wrapper>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+<p-popover #op>
+  <ul class="list-none p-0 m-0 flex flex-column gap-2">
+    @for(link of availableLinks(); track link._id) {
+    <li
+      class="flex items-center gap-2 p-2 border-round-2xl surface-100 hover:surface-200 transition-colors transition-duration-200 cursor-pointer"
+      (click)="linkWidget(link)"
+    >
+      <i [class]="getWidgetIcon(link.type)" [style.color]="link.color"></i>
+      <span>
+        {{ link.title }}
+      </span>
+    </li>
+    }
+  </ul>
+</p-popover>

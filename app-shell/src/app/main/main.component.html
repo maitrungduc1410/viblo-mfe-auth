@@ -1,0 +1,77 @@
+<div>
+  <!-- Header Bar -->
+  <div style="background-color: #2c3e50; color: white">
+    <div class="px-4 flex justify-content-between align-items-center">
+      <!-- Title -->
+      <div class="mr-2">
+        <h3>App shell</h3>
+      </div>
+      <!-- Right Section (Dropdown + Logout) -->
+      <div class="flex align-items-center">
+        <!-- Dropdown -->
+        <div class="flex align-items-center mr-4">
+          <p-toggleswitch [(ngModel)]="isAppView" class="flex mr-2" />
+          App View
+        </div>
+
+        <button
+          pButton
+          icon="pi pi-th-large"
+          severity="success"
+          pTooltip="Show widgets"
+          tooltipPosition="bottom"
+          class="mr-4"
+          (click)="isSidebarOpen.set(!isSidebarOpen())"
+        ></button>
+        <!-- Logout Button -->
+        <button
+          pButton
+          icon="pi pi-sign-out"
+          severity="danger"
+          pTooltip="Logout"
+          tooltipPosition="bottom"
+          (click)="logout()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+
+  <div class="container">
+    <widget-view-shell
+      *ngIf="!isAppView(); else appView"
+      [loaders]="widgetLoaders()"
+    ></widget-view-shell>
+
+    <ng-template #appView>
+      <router-outlet></router-outlet>
+    </ng-template>
+  </div>
+</div>
+
+<p-drawer [(visible)]="isSidebarOpen" header="Widgets" position="right">
+  <div class="flex flex-column gap-3">
+    @for(widget of selectableWidgets(); track widget.id) {
+    <div
+      class="flex align-items-center border-1 border-round-sm p-3 hover:shadow-3 cursor-pointer"
+      (click)="addWidget(widget)"
+    >
+      <div *ngIf="!isAppView()" class="w-2rem">
+        <ng-container [ngSwitch]="getWidgetType(widget)">
+          <i *ngSwitchCase="'hybrid'" class="pi pi-arrow-right-arrow-left"></i>
+          <i *ngSwitchCase="'emitter'" class="pi pi-wifi"></i>
+          <i *ngSwitchCase="'receiver'" class="pi pi-download"></i>
+          <i *ngSwitchDefault class="pi"></i>
+        </ng-container>
+      </div>
+      <div class="flex flex-1">
+        <div class="flex-1">
+          {{ widget.title }}
+        </div>
+        <i class="pi pi-arrow-right text-blue-500"></i>
+      </div>
+    </div>
+    }
+  </div>
+</p-drawer>
