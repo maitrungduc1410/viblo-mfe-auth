@@ -38,6 +38,7 @@
   [(visible)]="displayAddDialog"
   [style]="{ width: '25rem' }"
   styleClass="overflow-visible"
+  [modal]="true"
 >
   <div class="flex flex-column gap-3 p-3">
     <input
@@ -81,6 +82,7 @@
   [(visible)]="displayEditDialog"
   [style]="{ width: '25rem' }"
   styleClass="overflow-visible"
+  [modal]="true"
 >
   <div *ngIf="editedUser()" class="flex flex-column gap-3 p-3">
     <input
