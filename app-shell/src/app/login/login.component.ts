@@ -4,11 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { HttpClient } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, ButtonModule, InputTextModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -19,7 +22,11 @@ export class LoginComponent {
   error = signal<string | null>(null);
   loading = signal<boolean>(false);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   login() {
     this.loading.set(true);
@@ -41,11 +48,17 @@ export class LoginComponent {
           localStorage.setItem('token', response.token);
           localStorage.setItem('publicKey', response.publicKey);
           this.loading.set(false);
-          this.router.navigate(['/main'])
+          this.router.navigate(['/main']);
         },
         error: (err) => {
           this.error.set(err.error?.message || 'Login failed');
           this.loading.set(false);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: this.error() || 'Login failed',
+            life: 3000,
+          });
         },
       });
   }
