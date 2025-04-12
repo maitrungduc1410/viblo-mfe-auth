@@ -1,6 +1,9 @@
 // pages/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { jwtDecode } from "jwt-decode";
+
+const SCOPE = "REACT_MFE";
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -22,11 +25,19 @@ function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
-      })
+      });
       const json = await response.json();
 
       if (response.status !== 200) {
         console.error("Login failed:", response.body);
+        return;
+      }
+
+      // verify token must have REACT_MFE in scopes
+      const decoded: any = jwtDecode(json.token);
+      const scopes = decoded.scopes;
+      if (!scopes.includes(SCOPE)) {
+        console.error("Invalid scope");
         return;
       }
 

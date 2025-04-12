@@ -29,6 +29,14 @@ const AppLocal = () => {
           path="/app"
           element={
             <ProtectedRoute>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+              >
+                Logout
+              </button>
               <App />
             </ProtectedRoute>
           }

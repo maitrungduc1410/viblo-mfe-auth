@@ -11,6 +11,7 @@
   "dependencies": {
     "@module-federation/enhanced": "^0.6.6",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.1.0"
